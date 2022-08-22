@@ -36,6 +36,8 @@ func (lst *List) enque(num int) {
 	//if there is already an existing node
 	newTail := newNode(num)
 	curTail.next = newTail
+	newTail.prev = curTail
+
 	lst.tail = newTail
 	lst.length += 1
 }
@@ -67,6 +69,28 @@ func (lst *List) toSlice() []int {
 	return col
 }
 
+func (lst *List) reverse() {
+	currentHead := lst.head
+	currentTail := lst.tail
+
+	currentNode := currentHead
+
+	for currentNode != nil {
+		nextNode := currentNode.next
+		prev := currentNode.prev
+
+		//reverse the pointers
+		currentNode.next = prev
+		currentNode.prev = nextNode
+
+		//prepare for the next iteration
+		currentNode = nextNode
+	}
+
+	lst.head = currentTail
+	lst.tail = currentHead
+}
+
 func main() {
 	fmt.Println("vim-go")
 	q := newList()
@@ -75,11 +99,20 @@ func main() {
 	q.enque(8)
 	q.enque(9)
 	q.enque(6)
+
+	fmt.Println(q.toSlice())
+	q.reverse()
+	fmt.Println("after reversingt the list")
+	fmt.Println(q.toSlice())
+
+	fmt.Println(q.head)
+	fmt.Println(q.tail)
 	fmt.Println(q.head)
 	fmt.Println(q.toSlice())
 	q.deque()
 	fmt.Println(q.head)
 	q.deque()
+
 	fmt.Println(q.head)
 	fmt.Println(q.toSlice())
 	fmt.Println(q.head)
